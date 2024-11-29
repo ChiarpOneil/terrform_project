@@ -1,0 +1,8 @@
+#!/bin/bash
+hostnamectl set-hostname ${hostname};
+timedatectl set-timezone Europe/Rome;
+yum update -y
+yum install -y httpd
+echo “$(hostname -f)” > /var/www/html/index.html
+systemctl start httpd.service
+systemctl enable httpd.service

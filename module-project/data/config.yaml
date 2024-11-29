@@ -1,0 +1,9 @@
+region: eu-south-1
+peer-region: eu-central-1
+domain-name: giovanni.local
+domain-cidr: 10.140.0.0/16
+
+tags:
+  project: giovanni
+  resourceowner: giovanni.chiarpenello@kyndryl.com
+  terraform: kyn-lab-terraform/giovanni-lab-n01
