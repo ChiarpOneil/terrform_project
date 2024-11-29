@@ -1,0 +1,10 @@
+.*
+!.gitignore
+**/.terraform/*
+.DS_Store
+Thumbs.db
+requirements.txt
+build.zip
+**/__pycache__/*
+python.zip
+**/layers/*
