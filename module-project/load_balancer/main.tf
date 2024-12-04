@@ -19,12 +19,25 @@ resource "aws_lb_target_group" "main" {
     port = each.value.port
     protocol = each.value.protocol
   }
+  stickiness {
+    enabled = true
+    type = "lb_cookie"
+  }
 }
 
 #CREAZIONE TARGET GROUP ATTACHMENT
-resource "aws_lb_target_group_attachment" "lb_tg_attachments" {
-  for_each         = var.load_balancer
-  target_group_arn = aws_lb_target_group.main[each.key].arn
+resource "aws_lb_target_group_attachment" "main" {
+  for_each         = {for attach in flatten([
+    for tg_key, tg in var.load_balancer: [
+        for ec2 in tg.ec2: {
+          tg_key = tg_key
+          port = tg.port
+          ec2 = ec2
+        } 
+      ]
+    ]
+  ): "${attach.tg_key}.${attach.ec2}" => attach}
+  target_group_arn = aws_lb_target_group.main[each.value.tg_key].arn
   target_id        = var.ec2_ids[each.value.ec2]
   port             = each.value.port
 }

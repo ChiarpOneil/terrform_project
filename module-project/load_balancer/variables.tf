@@ -4,7 +4,7 @@ variable "load_balancer" {
         security_groups = list(string)
         subnets = list(string)
         target_group = string
-        ec2 = string
+        ec2 = list(string)
         protocol = string
         port = number}))
     default = {
@@ -12,7 +12,7 @@ variable "load_balancer" {
             security_groups = [""]
             subnets = [""]
             target_group = ""
-            ec2 = ""
+            ec2 = [""]
             protocol = ""
             port = 0
         }

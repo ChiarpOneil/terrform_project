@@ -298,7 +298,7 @@ load_balancer = {
         security_groups = ["security_group_a"]
         subnets = ["A.transit_1","A.transit_2"]
         target_group = "A"
-        ec2 = "ec2_a_1"
+        ec2 = ["ec2_a_1","ec2_a_2"]
         protocol = "HTTP"
         port = 80
     }
@@ -326,7 +326,7 @@ db_snap = [
   }
 ]
 
-security_group = [ {
+subnet_group = [ {
     name = "subnet_group_name_1"
     subnet_ids = ["B.private_1","B.private_2"]
 } ]
@@ -335,3 +335,17 @@ snapshot = [{
     name = "mydbsnapshot"
     id = "mydb"
 }]
+
+auto_scaler = {
+    auto_scaler = {
+        name = "auto_scaler"
+        min_size = 1
+        max_size = 2
+        subnet = ["A.transit_1","A.transit_2"]
+        security_group = ["security_group_a"]
+        attachment = ["load_balancer"]
+        bad_policies = [1]
+        ok_policies = [-1]
+        cloud_watch_alarm = [0]
+  }
+}

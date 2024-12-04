@@ -11,7 +11,7 @@ resource "aws_db_instance" "main" {
         parameter_group_name    = db.parameter_group_name
     }}
     identifier = each.key
-    backup_retention_period = 1
+    backup_retention_period = 0
     backup_window           = "07:00-09:00"
 
     depends_on           = [aws_db_subnet_group.main]
@@ -56,9 +56,12 @@ resource "aws_db_instance" "snap" {
   for_each             = {for db in var.db_snap: "${db.snapshot}${index(var.db_snap,db)}"=> {
         vpc_security_group_ids = [for vpc_sec in db.vpc_security_group_ids: var.security_group_ids[vpc_sec] ]
         snapshot = db.snapshot
+        db_subnet_group_name = db.db_subnet_group_name
         instance_class = db.instance_class
     }}
   identifier = each.key
+  skip_final_snapshot     = true
+  db_subnet_group_name = each.value.db_subnet_group_name
   snapshot_identifier = each.value.snapshot
   instance_class = each.value.instance_class
   depends_on = [ aws_db_snapshot.main ]

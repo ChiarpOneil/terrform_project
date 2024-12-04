@@ -51,7 +51,7 @@ module "endpoint" {
   security_group_ids = module.security_group.security_group
   vpc_ids = module.vpc_subnet_rtb.vpc
 }
-#MODULO LOADBALANCER
+#MODULO LOAD BALANCER
 module "load_balancer" {
   source = "./load_balancer/"
   load_balancer = var.load_balancer
@@ -61,13 +61,24 @@ module "load_balancer" {
   ec2_ids = module.ec2.ec2
 
 }
+
 #MODULO DB
 module "database" {
   source = "./database/"
   db = var.db
   db_snap = var.db_snap
-  security_group = var.security_group
+  security_group = var.subnet_group
   snapshot = var.snapshot
   subnet_ids = module.vpc_subnet_rtb.subnet
+  security_group_ids = module.security_group.security_group
+}
+
+#MODULO AUTO SCALING GROUP
+module "auto_scaling_group" {
+  source = "./auto_balance"
+  for_each = var.auto_scaler
+  auto_scaler = each.value
+  subnet_ids = module.vpc_subnet_rtb.subnet
+  target_group_arns = module.load_balancer.target_group
   security_group_ids = module.security_group.security_group
 }

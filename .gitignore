@@ -1,5 +1,6 @@
 .*
 !.gitignore
+!token
 **/.terraform/*
 .DS_Store
 Thumbs.db

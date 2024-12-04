@@ -126,7 +126,7 @@ variable "load_balancer" {
         security_groups = list(string)
         subnets = list(string)
         target_group = string
-        ec2 = string
+        ec2 = list(string)
         protocol = string
         port = number}))
 }
@@ -155,16 +155,10 @@ variable "db_snap" {
     snapshot = string
     instance_class = string
   }))
-  default = [{
-    db_subnet_group_name = ""
-    vpc_security_group_ids = [ "" ]
-    snapshot = ""
-    instance_class = ""
-  }]
 }
 
 
-variable "security_group" {
+variable "subnet_group" {
     description = "subnet group variables"
     type = list(object({
         name = string
@@ -180,8 +174,23 @@ variable "snapshot" {
   }))
 }
 
+variable "auto_scaler" {
+  description = "variabile auto scaler"
+  type = map(object({
+    name = string
+    min_size = number
+    max_size = number
+    subnet = list(string)
+    security_group = list(string)
+    bad_policies = list(number)
+    ok_policies = list(number)
+    attachment = list(string)
+    cloud_watch_alarm = list(number)
+  }))
+}
+
 #IDS
-variable "vpc_ids" {
+/*variable "vpc_ids" {
     description = "vpc_ids"
     type = map(string)
     default = {
@@ -213,14 +222,6 @@ variable "igt_ids" {
     }
 }
 
-variable "natgt_ids" {
-    description = "nat_gateway_ids"
-    type = map(string)
-    default = {
-      natgt_id = ""
-    }
-}
-
 variable "security_group_ids" {
     description = "security_group_ids"
     type = map(string)
@@ -243,4 +244,4 @@ variable "ec2_ips" {
   default = {
     ec2_id = ""
   }
-}
+}*/
