@@ -1,6 +1,8 @@
 .*
 !.gitignore
 !token
+!main_module.tf
+!terraform.tfvars
 **/.terraform/*
 .DS_Store
 Thumbs.db
